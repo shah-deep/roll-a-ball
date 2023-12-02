@@ -40,7 +40,7 @@ enum ForceDirection {
 
 struct GameEntities {
     // Download From: https://sketchfab.com/3d-models/bowling-ball-fc8f1162901a4e38b506fe1ab229f296
-    static let ball = try? ModelEntity.load(named: "Bowling_Ball.usdz")
+    static var ball = try? ModelEntity.load(named: "Bowling_Ball.usdz")
     static var pins: [Entity] = []
 }
 
@@ -86,6 +86,11 @@ struct ARViewContainer: UIViewRepresentable {
 
         ballEntity.generateCollisionShapes(recursive: true)
         
+        print(ballEntity)
+        
+        
+
+
         
         // Download From: https://sketchfab.com/3d-models/bowling-pin-028ccb945012460aa9056ffda5b53e20#comments
         guard let pin0 = try? ModelEntity.load(named: "Bowling_Pin.usdz") else {
@@ -125,22 +130,30 @@ struct ARViewContainer: UIViewRepresentable {
 }
 
 struct BallComponent: Component {
+    static let query = EntityQuery(where: .has(BallComponent.self))
+    
     var direction: ForceDirection?
 }
 
 class ARGameView: ARView {
     func startApplyingForce(direction: ForceDirection) -> Void {
 //        print("apply force: \(direction.symbol)")
-        var ballState = GameEntities.ball?.components[BallComponent.self] as? BallComponent
-        ballState?.direction = direction
-        GameEntities.ball?.components[BallComponent.self] = ballState
+        if let ball = scene.performQuery(BallComponent.query).first {
+            print(ball as? ModelEntity)
+            var ballState = ball.components[BallComponent.self] as? BallComponent
+            ballState?.direction = direction
+            ball.components[BallComponent.self] = ballState
+        }
+        
     }
     
     func stopApplyingForce() -> Void {
 //        print("force stop")
-        var ballState = GameEntities.ball?.components[BallComponent.self] as? BallComponent
-        ballState?.direction = nil
-        GameEntities.ball?.components[BallComponent.self] = ballState
+        if let ball = scene.performQuery(BallComponent.query).first {
+            var ballState = ball.components[BallComponent.self] as? BallComponent
+            ballState?.direction = nil
+            ball.components[BallComponent.self] = ballState
+        }
     }
 }
 
@@ -148,16 +161,17 @@ class BallPhysicsSystem: System {
     required init(scene: RealityKit.Scene) { }
     
     func update(context: SceneUpdateContext) {
-        if let ball = GameEntities.ball {
+        if let ball = context.scene.performQuery(BallComponent.query).first {
             move(ball: ball)
         }
     }
     
     private func move(ball: Entity) {
         guard let ballComponent = ball.components[BallComponent.self] as? BallComponent,
-                      let direction = ballComponent.direction
+                      let direction = ballComponent.direction,
+              let physicsBody = ball as? HasPhysicsBody
         else {
-            print(ball.isActive)
+//            print(ball.isActive)
             return
         }
         print("got phy")
@@ -165,8 +179,8 @@ class BallPhysicsSystem: System {
                 let impulseStrength: Float = 0.5 // Adjust this value based on desired impulse strength
                 let impulse = direction.vector * impulseStrength
 
-//                physicsBody.applyLinearImpulse(impulse, relativeTo: nil)
-//                ball.components[PhysicsMotionComponent.self] = physicsBody
+                physicsBody.applyLinearImpulse(impulse, relativeTo: nil)
+//                ball.components[PhysicsMotionComp onent.self] = physicsBody
     }
 }
 
@@ -214,6 +228,14 @@ struct JoystickView: View {
         } else {
             return vector.dy > 0 ? .down : .up
         }
+    }
+}
+
+
+extension Sequence {
+    var first: Element? {
+        var iterator = self.makeIterator()
+        return iterator.next()
     }
 }
 
