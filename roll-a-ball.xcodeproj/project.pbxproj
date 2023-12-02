@@ -11,6 +11,8 @@
 		030A76E22B19B10B00C6E551 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030A76E12B19B10B00C6E551 /* ContentView.swift */; };
 		030A76E42B19B10C00C6E551 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 030A76E32B19B10C00C6E551 /* Assets.xcassets */; };
 		030A76E72B19B10C00C6E551 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 030A76E62B19B10C00C6E551 /* Preview Assets.xcassets */; };
+		030A76F32B19BCA500C6E551 /* Bowling_Pin.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 030A76F12B19BCA500C6E551 /* Bowling_Pin.usdz */; };
+		030A76F42B19BCA500C6E551 /* Bowling_Ball.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 030A76F22B19BCA500C6E551 /* Bowling_Ball.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		030A76E12B19B10B00C6E551 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		030A76E32B19B10C00C6E551 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		030A76E62B19B10C00C6E551 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		030A76F12B19BCA500C6E551 /* Bowling_Pin.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Bowling_Pin.usdz; sourceTree = "<group>"; };
+		030A76F22B19BCA500C6E551 /* Bowling_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Bowling_Ball.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 				030A76DF2B19B10B00C6E551 /* AppDelegate.swift */,
 				030A76E12B19B10B00C6E551 /* ContentView.swift */,
 				030A76E32B19B10C00C6E551 /* Assets.xcassets */,
+				030A76F22B19BCA500C6E551 /* Bowling_Ball.usdz */,
+				030A76F12B19BCA500C6E551 /* Bowling_Pin.usdz */,
 				030A76E52B19B10C00C6E551 /* Preview Content */,
 			);
 			path = "roll-a-ball";
@@ -126,7 +132,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				030A76E72B19B10C00C6E551 /* Preview Assets.xcassets in Resources */,
+				030A76F42B19BCA500C6E551 /* Bowling_Ball.usdz in Resources */,
 				030A76E42B19B10C00C6E551 /* Assets.xcassets in Resources */,
+				030A76F32B19BCA500C6E551 /* Bowling_Pin.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +279,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"roll-a-ball/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "roll-a-ball/Preview\\ Content roll-a-ball";
 				DEVELOPMENT_TEAM = QCWYH3HLSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -282,6 +290,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +311,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"roll-a-ball/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "roll-a-ball/Preview\\ Content roll-a-ball";
 				DEVELOPMENT_TEAM = QCWYH3HLSU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -313,6 +322,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
