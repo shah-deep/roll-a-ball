@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-//        BallPhysicsSystem.registerSystem()
+        BallPhysicsSystem.registerSystem()
         
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
