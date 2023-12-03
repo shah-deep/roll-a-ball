@@ -141,14 +141,14 @@ struct ARViewContainer: UIViewRepresentable {
         pin2.transform.translation = SIMD3<Float>(0.0, 0.0, -0.4)
         pin3.transform.translation = SIMD3<Float>(0.4, 0.0, 0.0)
         pin4.transform.translation = SIMD3<Float>(-0.4, 0.0, 0.0)
-        
+        print(pin0)
         
         GameEntities.pins.append(contentsOf: [pin1, pin2, pin3, pin4])
         
         // Create horizontal plane anchor for the content
         let anchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: SIMD2<Float>(0.2, 0.2)))
-        anchor.components.set(physics)
-        anchor.generateCollisionShapes(recursive: true)
+//        anchor.components.set(physics)
+//        anchor.generateCollisionShapes(recursive: true)
         
 
        // Add collision to the horizontal plane
@@ -205,18 +205,24 @@ class BallPhysicsSystem: System {
     
     private func move(ball: Entity) {
         guard let ballComponent = ball.components[BallComponent.self] as? BallComponent,
-                      let direction = ballComponent.direction,
               let physicsBody = ball as? HasPhysicsBody
         else {
             return
         }
+        guard let direction = ballComponent.direction else {
+            return
+        }
 //        print("got phy")
 
-                let impulseStrength: Float = 0.0005 // Adjust this value based on desired impulse strength
-                let impulse = direction.vector * impulseStrength
+//                let impulseStrength: Float = 0.0005 // Adjust this value based on desired impulse strength
+//                let impulse = direction.vector * impulseStrength
 
-                physicsBody.applyLinearImpulse(impulse, relativeTo: nil)
+//                physicsBody.addForce(impulse, relativeTo: nil)
 //                ball.components[PhysicsMotionComponent.self] = physicsBody
+        
+        let torqueStrength: Float = 0.05  // Adjust this value based on desired rotation strength
+        let torque = SIMD3<Float>(direction.vector.z, 0, -direction.vector.x) * torqueStrength
+            physicsBody.addTorque(torque, relativeTo: nil)
     }
 }
 
