@@ -40,11 +40,11 @@ enum ForceDirection {
 
 struct GameEntities {
     // Download From: https://sketchfab.com/3d-models/bowling-ball-fc8f1162901a4e38b506fe1ab229f296
-    static let ball = try? ModelEntity.load(named: "Bowling_Ball.usdz")
+    static var ball = try? ModelEntity.load(named: "Bowling_Ball.usdz")
     static var pins: [Entity] = []
 }
 
-struct ContentView : View {
+struct ContentView: View {
     private let arView = ARGameView()
     
     var body: some View {
@@ -65,35 +65,70 @@ struct ARViewContainer: UIViewRepresentable {
     
     let arView: ARGameView
     
+    func findModelEntity(in entity: Entity) -> ModelEntity? {
+        if let modelEntity = entity as? ModelEntity {
+            return modelEntity
+        }
+        
+        for child in entity.children {
+            if let foundModelEntity = findModelEntity(in: child) {
+                return foundModelEntity
+            }
+        }
+        
+        return nil
+    }
+    
     func makeUIView(context: Context) -> ARGameView {
         
         // let arView = ARView(frame: .zero)
         
-        let physics = PhysicsBodyComponent(massProperties: .default, material: .default, mode: .dynamic)
-        let motion = PhysicsMotionComponent(linearVelocity: [0.1 ,0, 0], angularVelocity: [3, 3, 3])
+        let physics = PhysicsBodyComponent(
+            massProperties: .default, material: .default, mode: .dynamic)
         
-        guard let ballEntity = GameEntities.ball else {
+//        let motion = PhysicsMotionComponent(linearVelocity: [0.1 ,0, 0], angularVelocity: [3, 3, 3])
+
+        guard var ballEntity = GameEntities.ball else {
                 fatalError("Failed to load the Bowling Ball USDZ model.")
         }
         
-       
+        if let object0 = findModelEntity(in: ballEntity) {
+            ballEntity = object0
+        } else {
+            print("Object_0 not found.")
+        }
+        
+
         ballEntity.components.set(physics)
-        ballEntity.components.set(motion)
+//        ballEntity.components.set(motion)
 //        ballEntity.components[PhysicsMotionComponent.self] = PhysicsMotionComponent()
         
         ballEntity.components[BallComponent.self] = BallComponent()
         
 
         ballEntity.generateCollisionShapes(recursive: true)
-        
+        ballEntity.transform.translation = SIMD3<Float>(0, 0, 0)
+        ballEntity.transform.scale = SIMD3<Float>(0.1, 0.1, 0.1)
+//        print("here")
+//        print(ballEntity as? ModelEntity)
+//        print(ballEntity as? HasPhysicsBody)
+        GameEntities.ball = ballEntity
+
         
         // Download From: https://sketchfab.com/3d-models/bowling-pin-028ccb945012460aa9056ffda5b53e20#comments
-        guard let pin0 = try? ModelEntity.load(named: "Bowling_Pin.usdz") else {
+        guard var pin0 = try? ModelEntity.load(named: "Bowling_Pin.usdz") else {
                 fatalError("Failed to load the Pin USDZ model.")
+        }
+        
+        if let object1 = findModelEntity(in: pin0) {
+            pin0 = object1
+        } else {
+            print("Object_1 not found.")
         }
         
         pin0.components.set(physics)
         pin0.generateCollisionShapes(recursive: true)
+//        pin0.orientation = simd_quatf(angle: .pi/2, axis: [0,0,0])
         
         // Create three additional copies of the original entity
         let pin1 = pin0.clone(recursive: true)
@@ -107,11 +142,26 @@ struct ARViewContainer: UIViewRepresentable {
         pin3.transform.translation = SIMD3<Float>(0.4, 0.0, 0.0)
         pin4.transform.translation = SIMD3<Float>(-0.4, 0.0, 0.0)
         
+        
         GameEntities.pins.append(contentsOf: [pin1, pin2, pin3, pin4])
         
         // Create horizontal plane anchor for the content
         let anchor = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: SIMD2<Float>(0.2, 0.2)))
+        anchor.components.set(physics)
+        anchor.generateCollisionShapes(recursive: true)
+        
+
+       // Add collision to the horizontal plane
+        let planeMesh = MeshResource.generatePlane(width: 10, depth: 10)
+        let planeCollider = ModelEntity(mesh: planeMesh)
+        planeCollider.physicsBody = PhysicsBodyComponent(massProperties: .default, material: .default, mode: .static)
+        planeCollider.generateCollisionShapes(recursive: true)
+        planeCollider.components[ModelComponent.self] = nil // make the floor invisible
+        anchor.addChild(planeCollider)
+        
+
         anchor.children.append(contentsOf: [ballEntity, pin1, pin2, pin3, pin4])
+        
 
         // Add the horizontal plane anchor to the scene
         arView.scene.anchors.append(anchor)
@@ -155,17 +205,17 @@ class BallPhysicsSystem: System {
     
     private func move(ball: Entity) {
         guard let ballComponent = ball.components[BallComponent.self] as? BallComponent,
-                      let direction = ballComponent.direction
+                      let direction = ballComponent.direction,
+              let physicsBody = ball as? HasPhysicsBody
         else {
-            print(ball.isActive)
             return
         }
-        print("got phy")
+//        print("got phy")
 
-                let impulseStrength: Float = 0.5 // Adjust this value based on desired impulse strength
+                let impulseStrength: Float = 0.0005 // Adjust this value based on desired impulse strength
                 let impulse = direction.vector * impulseStrength
 
-//                physicsBody.applyLinearImpulse(impulse, relativeTo: nil)
+                physicsBody.applyLinearImpulse(impulse, relativeTo: nil)
 //                ball.components[PhysicsMotionComponent.self] = physicsBody
     }
 }
