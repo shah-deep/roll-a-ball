@@ -13,6 +13,7 @@
 		030A76E72B19B10C00C6E551 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 030A76E62B19B10C00C6E551 /* Preview Assets.xcassets */; };
 		030A76F32B19BCA500C6E551 /* Bowling_Pin.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 030A76F12B19BCA500C6E551 /* Bowling_Pin.usdz */; };
 		030A76F42B19BCA500C6E551 /* Bowling_Ball.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 030A76F22B19BCA500C6E551 /* Bowling_Ball.usdz */; };
+		039769772B1D2877001C8EC5 /* Bowling_Pin1.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 039769762B1D2877001C8EC5 /* Bowling_Pin1.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		030A76E62B19B10C00C6E551 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		030A76F12B19BCA500C6E551 /* Bowling_Pin.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Bowling_Pin.usdz; sourceTree = "<group>"; };
 		030A76F22B19BCA500C6E551 /* Bowling_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Bowling_Ball.usdz; sourceTree = "<group>"; };
+		039769762B1D2877001C8EC5 /* Bowling_Pin1.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Bowling_Pin1.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 		030A76DE2B19B10B00C6E551 /* roll-a-ball */ = {
 			isa = PBXGroup;
 			children = (
+				039769762B1D2877001C8EC5 /* Bowling_Pin1.usdz */,
 				030A76DF2B19B10B00C6E551 /* AppDelegate.swift */,
 				030A76E12B19B10B00C6E551 /* ContentView.swift */,
 				030A76E32B19B10C00C6E551 /* Assets.xcassets */,
@@ -132,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				030A76E72B19B10C00C6E551 /* Preview Assets.xcassets in Resources */,
+				039769772B1D2877001C8EC5 /* Bowling_Pin1.usdz in Resources */,
 				030A76F42B19BCA500C6E551 /* Bowling_Ball.usdz in Resources */,
 				030A76E42B19B10C00C6E551 /* Assets.xcassets in Resources */,
 				030A76F32B19BCA500C6E551 /* Bowling_Pin.usdz in Resources */,
