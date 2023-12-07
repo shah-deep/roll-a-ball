@@ -49,6 +49,8 @@ struct GameEntities {
 struct ContentView: View {
     private let arView = ARGameView()
     
+    @State var showGameOver: Bool = false
+    
     var body: some View {
         ZStack {
             ARViewContainer(arView: arView)
@@ -58,6 +60,16 @@ struct ContentView: View {
                 startApplyingForce: arView.startApplyingForce(direction:),
                 stopApplyingForce: arView.stopApplyingForce
             )
+        }.alert(isPresented: $showGameOver) {
+            Alert(
+                title: Text("You Win!"),
+                dismissButton: .default(Text("Ok")) {
+                    showGameOver = false
+                }
+            )
+        }
+        .onReceive(NotificationCenter.default.publisher(for: PinSystem.gameOverNotification)) { _ in
+            showGameOver = true
         }
     }
 }
@@ -111,7 +123,7 @@ struct ARViewContainer: UIViewRepresentable {
             print("Object_0 not found.")
         }
         
-        var physics = PhysicsBodyComponent(massProperties: .init(mass: 10.0), material: .generate(friction: 0.4, restitution: 0) , mode: .dynamic)
+        let physics = PhysicsBodyComponent(massProperties: .init(mass: 10.0), material: .generate(friction: 0.4, restitution: 0) , mode: .dynamic)
         
         
         ballEntity.components.set(physics)
@@ -138,7 +150,7 @@ struct ARViewContainer: UIViewRepresentable {
                 fatalError("Failed to load the Pin USDZ model.")
         }
         
-        var pin_main = pin0
+        let pin_main = pin0
 
         if let object1 = findModelEntity(in: pin0) {
             pin0 = object1
@@ -221,12 +233,38 @@ struct ARViewContainer: UIViewRepresentable {
 struct BallComponent: Component {
     var direction: ForceDirection?
     
-    static let query = EntityQuery(where: .has(BallComponent.self))
+//    static let query = EntityQuery(where: .has(BallComponent.self))
 }
 
 struct PinRotatedComponent: Component {
     var isRotated = false
     var num = 0
+}
+
+class PinSystem: System {
+    
+    static let gameOverNotification = Notification.Name("Game Over")
+    static var gameOver = false
+    
+    required init(scene: RealityKit.Scene) { }
+    
+    func update(context: SceneUpdateContext) {
+        if PinSystem.gameOver {
+            return
+        }
+        
+        // Check if all pins are rotated
+        let allPinsRotated = GameEntities.pins.allSatisfy { pin in
+            return pin.components[PinRotatedComponent.self]?.isRotated ?? false
+        }
+        
+        // If all pins are rotated, mark the game as "game over" and post the notification
+        if allPinsRotated {
+            PinSystem.gameOver = true
+            print("over GAME")
+            NotificationCenter.default.post(name: PinSystem.gameOverNotification, object: nil)
+        }
+    }
 }
 
 class ARGameView: ARView {
@@ -366,12 +404,12 @@ struct JoystickView: View {
 }
 
 
-extension Sequence {
-    var first: Element? {
-        var iterator = self.makeIterator()
-        return iterator.next()
-    }
-}
+//extension Sequence {
+//    var first: Element? {
+//        var iterator = self.makeIterator()
+//        return iterator.next()
+//    }
+//}
 
 
 
